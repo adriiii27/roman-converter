@@ -1,0 +1,28 @@
+name: Roman Converter CD
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  check-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Instalar dependencias
+        run: npm install
+      - name: Ejecutar Linting (Revisión de código)
+        run: npm run lint
+      - name: Ejecutar Tests
+        run: npm run test
+
+  deploy:
+    needs: check-quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Desplegar en GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: .
+          branch: gh-pages
